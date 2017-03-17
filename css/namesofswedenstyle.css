@@ -1,0 +1,73 @@
+/*
+Color Schema
+#EAEAF1
+#D98C44
+#A74E19
+#72260B
+#3E1103
+*/
+body{
+    height: 100%;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+    font-family: caviarFont;
+}
+
+.page{
+    height: 100vh;
+    overflow-x: hidden;
+    padding: 0;
+}
+.halfpage{
+    height: 50%;
+}
+
+.top{
+    background: url("../images/placeholderKaffe.jpg") fixed;
+    background-size: auto;
+    background-position: bottom right;
+    color: #3E1103;
+}
+
+.textBox{
+    position: relative;
+    top: 30%;
+}
+
+h1{
+    text-shadow: 2px 2px #EAEAF1;
+    font-size: 50px;
+    padding: 15px;
+}
+.bottom{
+    background-color: #3E1103;
+    color: #D98C44;
+    
+    padding: 10px;
+}
+
+.input{
+    background-color: #EAEAF1;
+    border: 2px solid #3E1103;
+    margin-top: 3px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.button{
+    background-color: #72260B;
+    color: #EAEAF1;
+    font-family: caviarFont;
+}
+
+table{
+    width: 100%;
+    border: 1px solid black;
+}
+
+@font-face {
+    font-family: caviarFont;
+    src: url("../fonts/CaviarDreams.ttf");
+}
