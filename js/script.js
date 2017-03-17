@@ -1,3 +1,6 @@
+
+
+
 document.getElementById("search_btn").onclick = function () {
     var name = document.getElementById("search_field").value;
     nameSearched(name);
@@ -5,9 +8,14 @@ document.getElementById("search_btn").onclick = function () {
 
 function nameSearched(name) {
     setTitle(name);
+    getSCBData(name);
+
 }
 
-function setTitle(name){
+function setTitle(name) {
     document.getElementById("title_text").innerHTML = "Result for the name: " + name;
-    document.getElementsByClassName("bottom");
+}
+
+function getSCBData(input) {
+    
 }
