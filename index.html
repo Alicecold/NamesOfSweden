@@ -16,6 +16,9 @@
         crossorigin="anonymous" defer></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous" defer></script>
+    <script src="js/script.js" defer>
+
+    </script>
 </head>
 
 <body>
@@ -26,10 +29,9 @@
                     <div class="col-lg-12 col-md-12">
                         <h1>Names of Sweden</h1>
                         <div class="searchbox">
-                            <form>
-                                <input class="input field" type="search" name="name" value="Name">
-                                <input class="input button" type="submit" value="Search">
-                            </form>
+
+                            <input class="input field" id="search_field" type="search" name="name" alt="Name">
+                            <input class="input button" id="search_btn" type="submit" value="Search" alt="search">
                         </div>
                     </div>
                 </div>
@@ -38,13 +40,11 @@
         <div class="bottom halfpage">
             <div class="row">
                 <div class="col-lg-2 col-md-2">
-                    <form>
-                        <input class="input" type="text">
-                    </form>
+                    <input class="input" type="text" alt="Saved searches">
                 </div>
                 <div class="col-lg-8 col-md-8">
-                    <p>Resultat för namnet: Alice</p>
-                    <table>
+                    <p id="title_text">Please search after a swedish name above</p>
+                    <table alt="Info about current name">
                         <tr>
                             <th>
                                 Year
@@ -56,9 +56,7 @@
                     </table>
                 </div>
                 <div class="col-lg-2 col-md-2">
-                    <form>
-                        <input class="input button" type="submit" value="Save Search">
-                    </form>
+                    <input class="input button" type="submit" value="Save Search">
                 </div>
             </div>
         </div>
