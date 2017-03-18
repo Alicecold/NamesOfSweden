@@ -16,6 +16,7 @@ function setTitle(name) {
 }
 
 function getSCBData(input) {
+    /* Yaaaay JQuery */
     $.support.cors = true;
     var nameQuery = {
         "query": [
@@ -33,7 +34,7 @@ function getSCBData(input) {
             "format": "json"
         }
     };
-    /* Yaaaay JQuery */
+    
     $.ajax({
         type: "POST",
         url: "https://api.scb.se/OV0104/v1/doris/en/ssd/BE/BE0001/BE0001T04Ar/",   
@@ -49,7 +50,7 @@ function getSCBData(input) {
             showResults(outputArray);
         },
         error: function (jqXHR, status, thrown) {
-            console.log("Oooops! " + status + " " + thrown);
+            console.log("Oooops! " + thrown);
         }
     });
 }
