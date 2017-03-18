@@ -65,6 +65,17 @@ h1{
 table{
     width: 100%;
     border: 1px solid black;
+    
+}
+#result_table{
+    display: none;
+}
+
+#saved_btn{
+    display: none;
+}
+#saved_list{
+    display: none;
 }
 
 @font-face {
