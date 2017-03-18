@@ -24,16 +24,7 @@ function getSCBData(input) {
                 "selection": {
                     "filter": "vs:NamnAllaFlickor",
                     "values": [
-                        "AliceK"
-                    ]
-                }
-            },
-            {
-                "code": "Tid",
-                "selection": {
-                    "filter": "item",
-                    "values": [
-                        "2016"
+                        input + "K"
                     ]
                 }
             }
@@ -48,20 +39,33 @@ function getSCBData(input) {
         url: "http://api.scb.se/OV0104/v1/doris/en/ssd/BE/BE0001/BE0001T04Ar/",   
         data: JSON.stringify(nameQuery),
         dataType: "json",
-        success: function (data) {
-            console.log("Sucess! " + data.data[0].key);
+        success: function (recieved) {
+            console.log("SUCCESS!");
+            var outputArray = [];
+
+            $.each(recieved.data, function(i,data) {
+                outputArray.push([data.key[1], data.values]);	   
+				});
+            showResults(outputArray);
         },
         error: function (jqXHR, status, thrown) {
             console.log("Oooops! " + status + " " + thrown);
         }
     });
-    showResults();
 }
 
-/* When the results are shown, the option to save should as well */
-function showResults() {
+
+function showResults(output) {
+    var resultTable = document.getElementById("result_table");
+    
+    resultTable.style.display = "inline-block";
+    resultTable.innerHTML = "<tr><th>Year</th><th>Number of Baby Swedes with the name</th></tr>";
+    for (var i = 0; i < output.length; i++){
+        resultTable.innerHTML += "<tr><td>" + output[i][0] +  "</td><td>" + output[i][1] +  "</td></tr>";
+    }
+
+    /* When the results are shown, the option to save should as well */
     document.getElementById("saved_btn").style.display = "inline";
-    document.getElementById("result_table").style.display = "inline";
 }
 
 document.getElementById("saved_btn").onclick = function () {
