@@ -49,7 +49,7 @@ function getSCBData(input) {
         data: JSON.stringify(nameQuery),
         dataType: "json",
         success: function (data) {
-            console.log("Sucess! " + data.columns[2].text);
+            console.log("Sucess! " + data.data[0].key);
         },
         error: function (jqXHR, status, thrown) {
             console.log("Oooops! " + status + " " + thrown);
