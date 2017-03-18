@@ -62,9 +62,26 @@ h1{
     font-family: caviarFont;
 }
 
-table{
+table, th, td{
     width: 100%;
     border: 1px solid black;
+    border-collapse: collapse;
+    text-align: left;
+    white-space: nowrap;
+    
+}
+
+#result_table{
+    display: none;
+    font-size: 10px;
+
+}
+
+#saved_btn{
+    display: none;
+}
+#saved_list{
+    display: none;
 }
 
 @font-face {
