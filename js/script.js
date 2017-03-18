@@ -23,30 +23,33 @@ function getSCBData(input) {
             {
                 "code": "Tilltalsnamn",
                 "selection": {
-                    "filter": "vs:NamnAllaFlickor",
+                    "filter": "all",
                     "values": [
-                        input + "K"
+                        input + "*"
                     ]
                 }
-            }
+            },
         ],
         "response": {
             "format": "json"
         }
     };
-    
+
     $.ajax({
         type: "POST",
-        url: "https://api.scb.se/OV0104/v1/doris/en/ssd/BE/BE0001/BE0001T04Ar/",   
+        url: "https://api.scb.se/OV0104/v1/doris/en/ssd/BE/BE0001/BE0001T04Ar/",
         data: JSON.stringify(nameQuery),
         dataType: "json",
         success: function (recieved) {
-            console.log("SUCCESS!");
             var outputArray = [];
 
-            $.each(recieved.data, function(i,data) {
-                outputArray.push([data.key[1], data.values]);	   
-				});
+            $.each(recieved.data, function (i, data) {
+                /*Since Johan* also gives results like JohannaK and JohannesM */
+                var recievedName = data.key[0].substring(0, data.key[0].length - 1);
+                if (recievedName == input) {
+                    outputArray.push([data.key[1], data.values]);
+                }
+            });
             showResults(outputArray);
         },
         error: function (jqXHR, status, thrown) {
@@ -58,11 +61,11 @@ function getSCBData(input) {
 
 function showResults(output) {
     var resultTable = document.getElementById("result_table");
-    
+
     resultTable.style.display = "inline-block";
     resultTable.innerHTML = "<tr><th>Year</th><th>Number of Baby Swedes with the name</th></tr>";
-    for (var i = 0; i < output.length; i++){
-        resultTable.innerHTML += "<tr><td>" + output[i][0] +  "</td><td>" + output[i][1] +  "</td></tr>";
+    for (var i = 0; i < output.length; i++) {
+        resultTable.innerHTML += "<tr><td>" + output[i][0] + "</td><td>" + output[i][1] + "</td></tr>";
     }
 
     /* When the results are shown, the option to save should as well */
