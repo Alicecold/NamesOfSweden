@@ -71,7 +71,7 @@ function showResults(output) {
     var resultTable = document.getElementById("result_table");
 
     resultTable.style.display = "inline-block";
-    resultTable.innerHTML = "<tr><th>Year</th><th>Number of Baby Swedes with the name</th></tr>";
+    resultTable.innerHTML = "<tr><th>Year</th><th>Number of Newborn Swedes</th></tr>";
     for (var i = 0; i < output.length; i++) {
         resultTable.innerHTML += "<tr><td>" + output[i][0] + "</td><td>" + output[i][1] + "</td></tr>";
     }

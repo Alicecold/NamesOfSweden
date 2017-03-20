@@ -12,44 +12,49 @@ body{
     padding-left: 0;
     padding-right: 0;
     text-align: center;
-    font-family: caviarFont;
+    font-family: caviarFont, Arial, Helvetica, sans-serif;
+    color: #D98C44;
+    background-color: #3E1103;
+    font-size: 20px;
 }
 
 .page{
     height: 100vh;
     overflow-x: hidden;
     padding: 0;
+    min-height: fit-content;
 }
+
 .halfpage{
-    height: 50%;
+    height: 30%;
 }
 
 .top{
-    background: url("../images/placeholderKaffe.jpg") fixed;
-    background-size: auto;
+    background: url("../images/placeholderKaffe.jpg") #EAEAF1;
+    background-attachment: fixed;
+    background-size: cover;
     background-position: bottom right;
     color: #3E1103;
+    text-shadow: 2px 2px #EAEAF1;
 }
 
 .textBox{
     position: relative;
-    top: 30%;
+    bottom: 0%;
+    top: 10%;
 }
 
 h1{
-    text-shadow: 2px 2px #EAEAF1;
-    font-size: 50px;
+    font-size: 40px;
     padding: 15px;
 }
 .bottom{
-    background-color: #3E1103;
-    color: #D98C44;
-    
     padding: 10px;
 }
 
 .input{
     background-color: #EAEAF1;
+    color: #3E1103;
     border: 2px solid #3E1103;
     margin-top: 3px;
     margin-left: 0;
@@ -59,7 +64,7 @@ h1{
 .button{
     background-color: #72260B;
     color: #EAEAF1;
-    font-family: caviarFont;
+    font-family: caviarFont, Arial, Helvetica, sans-serif;
 }
 
 table, th, td{
@@ -73,8 +78,8 @@ table, th, td{
 
 #result_table{
     display: none;
-    font-size: 10px;
-
+    font-size: 14px;
+    margin: 10px;
 }
 
 #saved_btn{
@@ -84,7 +89,20 @@ table, th, td{
     display: none;
 }
 
-@font-face {
-    font-family: caviarFont;
-    src: url("../fonts/CaviarDreams.ttf");
+.databox{
+    width: 100%;
+    height: 100%;
+    background-color: #EAEAF1;
+    border: 1px solid #72260B;
+    
+    text-align: left;
+    font-size: 16px;
+    color: #3E1103;
 }
+
+ul{
+    list-style-type: none;
+    padding-left: 4px;
+    margin: 2px;
+}
+

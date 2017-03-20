@@ -10,7 +10,9 @@
     <!-- stylesheets -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
-    <link rel="stylesheet" href="css/namesofswedenstyle.css"></link>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="stylesheet" href="css/resp-small.css"></link>
+    <link rel="stylesheet" href="css/font-face.css"></link>
     <!-- script files -->
 
     <script src="https://code.jquery.com/jquery-3.2.0.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I="
@@ -21,7 +23,8 @@
 
     </script>
 </head>
-
+<nav>
+</nav>
 <body>
     <div class="container-fluid page">
         <div class="top halfpage">
@@ -40,18 +43,41 @@
         </div>
         <div class="bottom halfpage">
             <div class="row">
-                <div class="col-lg-2 col-md-2">
-                    <input class="input" id="saved_list" type="text" alt="Saved searches">
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <p id="title_text">Please search after a Swedish name above</p>
-                    <table alt="Info about current name" id="result_table">
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <div id="saved_list">
+                        Favourite Searches
+                        <div class="databox">
 
-                    </table>
+                            <ul>
+                                <li>
+                                    Alice
+                                </li>
+                                <li>
+                                    Johan
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-2 col-md-2">
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                    <p id="title_text">Please search after a Swedish name above</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
                     <input class="input button" id="saved_btn" type="submit" value="Save Search">
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                    <table alt="Info about current name" id="result_table">
+                    </table>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-8">
+                </div>
+
             </div>
         </div>
     </div>

@@ -1,0 +1,47 @@
+@media(max-width: 767px){
+    .top{
+        background-position: bottom center;
+    }
+
+    .halfpage{
+        height: 35%;
+        min-height: fit-content;
+    }
+table, td, th{
+    width: 90%;
+    
+}
+    .textBox{
+        bottom: 5%;
+        top: 5%;
+    }
+
+}
+
+@media(min-width: 2000px){
+    body{
+        font-size: 60px;
+    }
+
+    .halfpage{
+        height: 30%;
+    }
+
+    h1{
+        font-size: 120px;
+    }
+
+    .textBox{
+        top: 50%;
+        
+    }
+
+    ul{
+        font-size: 60px;
+    }
+
+    #result_table{
+    font-size: 50px;
+
+    }
+}
