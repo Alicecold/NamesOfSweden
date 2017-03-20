@@ -13,6 +13,13 @@ function nameSearched(name) {
 
 function setTitle(name) {
     document.getElementById("title_text").innerHTML = "Results for the name: " + name;
+
+}
+
+function setTitleNameNotFound(name) {
+    document.getElementById("title_text").innerHTML = "The name '" + name + "' could not be found. It might be too uncommon (< 10 newborns/year since 1998) or there might be a spelling error.";
+    document.getElementById("saved_btn").style.display = "none";
+    document.getElementById("result_table").style.display = "none";
 }
 
 function getSCBData(input) {
@@ -54,6 +61,7 @@ function getSCBData(input) {
         },
         error: function (jqXHR, status, thrown) {
             console.log("Oooops! " + thrown);
+            setTitleNameNotFound(input);
         }
     });
 }
@@ -74,4 +82,12 @@ function showResults(output) {
 
 document.getElementById("saved_btn").onclick = function () {
     document.getElementById("saved_list").style.display = "inline";
+
+    var dbs = firebase.database();
+
+    dbs.ref("users/test").set({
+        name: "Alice",
+    });
+
+    
 }
