@@ -82,12 +82,5 @@ function showResults(output) {
 
 document.getElementById("saved_btn").onclick = function () {
     document.getElementById("saved_list").style.display = "inline";
-
-    var dbs = firebase.database();
-
-    dbs.ref("users/test").set({
-        name: "Alice",
-    });
-
     
 }
