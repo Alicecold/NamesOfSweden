@@ -19,12 +19,24 @@
         crossorigin="anonymous" defer></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous" defer></script>
-    <script src="js/script.js" defer>
+    <script src="js/script.js" defer></script>
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-database.js"></script>
+    <script>
+        var config = {
+            apiKey: "AIzaSyAL6AZMKdHQpYqaTiOAxEGDhdTWVWAxbUk",
+            authDomain: "namesofsweden-8d926.firebaseapp.com",
+            databaseURL: "https://namesofsweden-8d926.firebaseio.com",
+            storageBucket: "namesofsweden-8d926.appspot.com",
+            messagingSenderId: "1032937080211"
+        };
+        firebase.initializeApp(config);
     </script>
 </head>
-<nav>
-</nav>
+
 <body>
     <div class="container-fluid page">
         <div class="top halfpage">
@@ -47,14 +59,7 @@
                     <div id="saved_list">
                         Favourite Searches
                         <div class="databox">
-
-                            <ul>
-                                <li>
-                                    Alice
-                                </li>
-                                <li>
-                                    Johan
-                                </li>
+                            <ul id="datalist">
                             </ul>
 
                         </div>
@@ -65,11 +70,13 @@
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2">
                     <input class="input button" id="saved_btn" type="submit" value="Save Search">
+                    <input class="input button" id="login_btn" type="submit" value="Sign in">
+                    <input class="input button" id="logout_btn" type="submit" value="Sign out">
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-2 col-md-2 col-sm-2">
-                    
+
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <table alt="Info about current name" id="result_table">

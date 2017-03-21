@@ -1,4 +1,6 @@
 
+var current = {name: "", info: []};
+
 document.getElementById("search_btn").onclick = function () {
     var name = document.getElementById("search_field").value;
     nameSearched(name);
@@ -7,8 +9,6 @@ document.getElementById("search_btn").onclick = function () {
 function nameSearched(name) {
     setTitle(name);
     getSCBData(name);
-
-
 }
 
 function setTitle(name) {
@@ -54,13 +54,14 @@ function getSCBData(input) {
                 /*Since Johan* also gives results like JohannaK and JohannesM */
                 var recievedName = data.key[0].substring(0, data.key[0].length - 1);
                 if (recievedName == input) {
-                    outputArray.push([data.key[1], data.values]);
+                    outputArray.push([data.key[1], data.values[0]]);
                 }
             });
+            current.name = input;
+            current.info = outputArray;
             showResults(outputArray);
         },
         error: function (jqXHR, status, thrown) {
-            console.log("Oooops! " + thrown);
             setTitleNameNotFound(input);
         }
     });
@@ -75,12 +76,64 @@ function showResults(output) {
     for (var i = 0; i < output.length; i++) {
         resultTable.innerHTML += "<tr><td>" + output[i][0] + "</td><td>" + output[i][1] + "</td></tr>";
     }
-
-    /* When the results are shown, the option to save should as well */
-    document.getElementById("saved_btn").style.display = "inline";
 }
+
 
 document.getElementById("saved_btn").onclick = function () {
     document.getElementById("saved_list").style.display = "inline";
     
+}
+
+document.getElementById("saved_btn").style.display = "inline";
+
+
+/* Firebase */ 
+
+document.getElementById("login_btn").onclick = function () {
+    firebase.auth().signInAnonymously().catch(function (error) {
+        var errCode = error.code;
+        var errMsg = error.message;
+
+        console.log( errCode + "" + errMsg);
+    });
+
+
+}
+
+document.getElementById("logout_btn").onclick = function () {
+    firebase.auth().signOut().then(function () {
+        console.log("Logged out");
+    }, function (error) {
+        console.log("Oops! " + error);
+    });
+}
+
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        var isAnonymous = user.isAnonymous;
+        var uid = user.uid;
+        console.log("Logged In: " + uid);
+    } else {
+        console.log("Logged out");
+    }
+});
+
+savedList = function () {
+    var userId = firebase.auth().currentUser.uid;
+    return firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
+        var name = snapshot.val();
+        var listString = "";
+        for (x in name) {
+            listString += `<li>${x}</li>`;
+        }
+        document.getElementById("datalist").innerHTML = listString;
+
+    });
+}
+
+document.getElementById("saved_btn").onclick = function () {
+    firebase.database().ref("users/" + firebase.auth().currentUser.uid + "/" + current.name).set({
+        popularity: current.info
+    });
+    savedList();
 }
