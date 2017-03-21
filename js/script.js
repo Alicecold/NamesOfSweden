@@ -1,19 +1,13 @@
 
-var current = {name: "", info: []};
+let current = { name: "", info: [] };
 
 document.getElementById("search_btn").onclick = function () {
     var name = document.getElementById("search_field").value;
-    nameSearched(name);
-};
-
-function nameSearched(name) {
-    setTitle(name);
     getSCBData(name);
 }
 
 function setTitle(name) {
     document.getElementById("title_text").innerHTML = "Results for the name: " + name;
-
 }
 
 function setTitleNameNotFound(name) {
@@ -57,9 +51,15 @@ function getSCBData(input) {
                     outputArray.push([data.key[1], data.values[0]]);
                 }
             });
-            current.name = input;
-            current.info = outputArray;
-            showResults(outputArray);
+
+            if (outputArray.length > 0) {
+                current.name = input;
+                current.info = outputArray;
+                showResults(outputArray);
+                setTitle(input);
+            }
+
+            document.getElementById("saved_btn").style.display = "inline";
         },
         error: function (jqXHR, status, thrown) {
             setTitleNameNotFound(input);
@@ -79,25 +79,17 @@ function showResults(output) {
 }
 
 
-document.getElementById("saved_btn").onclick = function () {
-    document.getElementById("saved_list").style.display = "inline";
-    
-}
 
-document.getElementById("saved_btn").style.display = "inline";
+/* Firebase */
 
-
-/* Firebase */ 
-
+/*Login/logout*/
 document.getElementById("login_btn").onclick = function () {
     firebase.auth().signInAnonymously().catch(function (error) {
         var errCode = error.code;
         var errMsg = error.message;
 
-        console.log( errCode + "" + errMsg);
+        console.log(errCode + " " + errMsg);
     });
-
-
 }
 
 document.getElementById("logout_btn").onclick = function () {
@@ -113,27 +105,32 @@ firebase.auth().onAuthStateChanged(function (user) {
         var isAnonymous = user.isAnonymous;
         var uid = user.uid;
         console.log("Logged In: " + uid);
+        if (savedList()) {
+            document.getElementById("saved_list").style.display = "inline";
+        }
     } else {
         console.log("Logged out");
     }
 });
 
+/*Collect from firebase */
 savedList = function () {
     var userId = firebase.auth().currentUser.uid;
-    return firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
-        var name = snapshot.val();
+    firebase.database().ref('/users/' + userId).once('value', function (snapshot) {
         var listString = "";
-        for (x in name) {
-            listString += `<li>${x}</li>`;
-        }
+        snapshot.forEach(function (childSnapshot) {
+            listString += `<li class="namelist">${childSnapshot.key}</li>`;
+        });
         document.getElementById("datalist").innerHTML = listString;
-
     });
 }
 
+/*Put to firebase*/
 document.getElementById("saved_btn").onclick = function () {
     firebase.database().ref("users/" + firebase.auth().currentUser.uid + "/" + current.name).set({
         popularity: current.info
     });
-    savedList();
+    if (savedList()) {
+        document.getElementById("saved_list").style.display = "inline";
+    }
 }
