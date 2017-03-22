@@ -35,13 +35,12 @@ table, td, th{
         top: 50%;
         
     }
+    #result_table{
+        font-size: 50px;
 
-    ul{
-        font-size: 60px;
     }
 
-    #result_table{
-    font-size: 50px;
-
+    #datalist{
+        font-size: 60px;
     }
 }

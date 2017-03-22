@@ -10,6 +10,10 @@ function setTitle(name) {
     document.getElementById("title_text").innerHTML = "Results for the name: " + name;
 }
 
+function setTitleFromSaved(name){
+    document.getElementById("title_text").innerHTML = "Saved Results for the name: " + name;
+}
+
 function setTitleNameNotFound(name) {
     document.getElementById("title_text").innerHTML = "The name '" + name + "' could not be found. It might be too uncommon (< 10 newborns/year since 1998) or there might be a spelling error.";
     document.getElementById("saved_btn").style.display = "none";
@@ -82,8 +86,8 @@ function showResults(output) {
 
 /* Firebase */
 
-/*Login/logout*/
-document.getElementById("login_btn").onclick = function () {
+/*Log in/Log out*/
+document.getElementById("login_anon_btn").onclick = function () {
     firebase.auth().signInAnonymously().catch(function (error) {
         var errCode = error.code;
         var errMsg = error.message;
@@ -108,8 +112,17 @@ firebase.auth().onAuthStateChanged(function (user) {
         if (savedList()) {
             document.getElementById("saved_list").style.display = "inline";
         }
+
+        for (x of document.getElementsByClassName("loggedout"))
+            x.style.display = "none";
+        for (x of document.getElementsByClassName("loggedin"))
+            x.style.display = "inline";
     } else {
         console.log("Logged out");
+        for (x of document.getElementsByClassName("loggedin"))
+            x.style.display = "none";
+        for (x of document.getElementsByClassName("loggedout"))
+            x.style.display = "inline";
     }
 });
 
@@ -119,9 +132,20 @@ savedList = function () {
     firebase.database().ref('/users/' + userId).once('value', function (snapshot) {
         var listString = "";
         snapshot.forEach(function (childSnapshot) {
-            listString += `<li class="namelist">${childSnapshot.key}</li>`;
+            listString += `<tr> <td class="namelist">${childSnapshot.key}</td><td><i class="fa fa-trash deletevalue" aria-hidden="true"></i></td></tr>`; //<i class="fa fa-trash" aria-hidden="true"></i>
         });
         document.getElementById("datalist").innerHTML = listString;
+
+        var list = document.getElementsByClassName("namelist");
+        var list = document.getElementsByClassName("deletevalue");
+        for(var i = 0; i < list.length; i++){
+            list[i].onclick = function(){
+                firebase.database().ref('/users/' + userId + '/' + this.innerHTML + '/popularity/').once('value', function (snapshot) {
+                    showResults(snapshot.val());
+                });
+                setTitleFromSaved(this.innerHTML);
+            }
+        }
     });
 }
 

@@ -11,11 +11,20 @@ body{
     margin: 0;
     padding-left: 0;
     padding-right: 0;
-    text-align: center;
+    text-align: left;
     font-family: caviarFont, Arial, Helvetica, sans-serif;
     color: #D98C44;
     background-color: #3E1103;
     font-size: 20px;
+}
+
+.navbar{
+    width: 100%;
+    background-color: #3E1103;
+    position: fixed;
+    top: 0;
+    z-index: 2;
+    padding-left: 10px;
 }
 
 .page{
@@ -36,6 +45,7 @@ body{
     background-position: bottom right;
     color: #3E1103;
     text-shadow: 2px 2px #EAEAF1;
+    text-align: center;
 }
 
 .textBox{
@@ -50,6 +60,10 @@ h1{
 }
 .bottom{
     padding: 10px;
+}
+
+#title_text{
+    text-align: center;
 }
 
 .input{
@@ -85,24 +99,16 @@ table, th, td{
 #saved_btn{
     display: none;
 }
-#saved_list{
+/*#saved_list{
     display: none;
-}
+}*/
 
-.databox{
+#datalist{
     width: 100%;
-    height: 100%;
     background-color: #EAEAF1;
     border: 1px solid #72260B;
-    
-    text-align: left;
-    font-size: 16px;
+    font-size: 14px;
+    margin: 10px;
     color: #3E1103;
-}
-
-ul{
-    list-style-type: none;
-    padding-left: 4px;
-    margin: 2px;
 }
 
