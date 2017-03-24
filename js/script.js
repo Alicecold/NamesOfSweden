@@ -2,10 +2,14 @@
 let current = { name: "", info: [] };
 
 document.getElementById("search_btn").onclick = function () {
-    var name = document.getElementById("search_field").value;
-    getSCBData(name);
+    searchForName();
 }
 
+searchForName = function(){
+    var name = document.getElementById("search_field").value;
+    getSCBData(name);
+    return false;
+}
 function setTitle(name, reason) {
     switch (reason) {
         case "found":
