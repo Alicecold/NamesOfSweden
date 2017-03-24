@@ -126,44 +126,38 @@ document.getElementById("login_anon_btn").onclick = function () {
 
 document.getElementById("logout_btn").onclick = function () {
     firebase.auth().signOut().then(function () {
+        console.log("Logged out");
     }, function (error) {
-        console.log(error.message);
+        console.log("Oops! " + error);
     });
 }
 document.getElementById("login_google_btn").onclick = function () {
     var provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/plus.login');
     firebase.auth().signInWithPopup(provider).then(function (result) {
-        var token = result.credential.accessToken;
-        var user = result.user;
+
         console.log("Hi google!");
     }).catch(function (error) {
-        console.log(error.message);
+        console.log("Ooops google!");
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(errorCode + " " + errorMessage);
     });
 }
 
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-        if (user.isAnonymous) {
-            document.getElementById("user_info").innerHTML = "<i class='fa fa-user-circle'  aria-hidden='true'></i> Logged in <em>Anonymously</em>";
-        } else {
-            showUsername(user.getProviderId(), user.displayName);
-        }
+        var isAnonymous = user.isAnonymous;
+        var uid = user.uid;
         createTableFavs()
         toggleLoggedInNavbarState(true);
     } else {
+        console.log("Logged out");
         ableToSave(false);
         document.getElementById("saved_list").style.display = "none";
         toggleLoggedInNavbarState(false);
     }
 });
-
-showUsername = function (provider, username) {
-    switch (provider) {
-        case "google.com":
-            document.getElementById("user_info").innerHTML = "<i class='fa fa-user-circle'  aria-hidden='true'></i> Logged in as <em>" + username + "</em> via google";
-            break;
-    }
-}
 
 toggleLoggedInNavbarState = function (loggedIn) {
     if (loggedIn) {
