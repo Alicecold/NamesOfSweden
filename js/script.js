@@ -130,24 +130,12 @@ document.getElementById("logout_btn").onclick = function () {
         console.log(error.message);
     });
 }
-document.getElementById("login_google_btn").onclick = function () {
-    var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(function (result) {
-        var token = result.credential.accessToken;
-        var user = result.user;
-        console.log("Hi google!");
-    }).catch(function (error) {
-        console.log(error.message);
-    });
-}
 
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         if (user.isAnonymous) {
             document.getElementById("user_info").innerHTML = "<i class='fa fa-user-circle'  aria-hidden='true'></i> Logged in <em>Anonymously</em>";
-        } else {
-            showUsername(user.getProviderId(), user.displayName);
-        }
+        } 
         createTableFavs()
         toggleLoggedInNavbarState(true);
     } else {
@@ -156,14 +144,6 @@ firebase.auth().onAuthStateChanged(function (user) {
         toggleLoggedInNavbarState(false);
     }
 });
-
-showUsername = function (provider, username) {
-    switch (provider) {
-        case "google.com":
-            document.getElementById("user_info").innerHTML = "<i class='fa fa-user-circle'  aria-hidden='true'></i> Logged in as <em>" + username + "</em> via google";
-            break;
-    }
-}
 
 toggleLoggedInNavbarState = function (loggedIn) {
     if (loggedIn) {
@@ -186,7 +166,7 @@ createTableFavs = function () {
     firebase.database().ref('/users/' + userId).once('value', function (snapshot) {
         var listString = "";
         snapshot.forEach(function (childSnapshot) {
-            listString += `<tr><td class="nosweden-namerows">${childSnapshot.key}</td> <td><i class="fa fa-trash nosweden-delete-item" aria-hidden="true"></i></td></tr>`;
+            listString += `<tr><td class="nosweden-namerows nosweden-clickable">${childSnapshot.key}</td> <td><i class="fa fa-trash nosweden-delete-item nosweden-clickable" aria-hidden="true"></i></td></tr>`;
         });
         document.getElementById("data_list").innerHTML = listString;
         var rows = document.getElementsByClassName("nosweden-namerows");

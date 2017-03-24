@@ -86,6 +86,10 @@ h1{
     background-color: #D98C44;
 }
 
+.nosweden-clickable{
+    cursor:pointer;
+}
+
 table, th, td{
     width: 100%;
     border-collapse: collapse;
