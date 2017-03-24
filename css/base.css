@@ -92,7 +92,6 @@ h1{
 
 table, th, td{
     width: 100%;
-    border-collapse: collapse;
     text-align: left;
     white-space: nowrap;
     padding-left: 5px;
