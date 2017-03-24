@@ -148,8 +148,6 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         toggleLoggedInNavbarState(true);
         createTableFavs()
-        var provider = user.getProviderID;
-        showUsername(provider, user.displayName);
         
     } else {
         ableToSave(false);
