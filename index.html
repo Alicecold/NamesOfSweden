@@ -41,33 +41,32 @@
 </head>
 
 <body>
-    <div class="navbar">
-        <p class="loggedout"><i class="fa fa-user-secret" id="login_anon_btn" aria-hidden="true"></i> Sign in anonymously</p>
-        <p class="loggedout"><i class="fa fa-google-plus" aria-hidden="true"></i> Sign in with google </p>
-        <p class="loggedin"><i class="fa fa-sign-out" id="logout_btn" aria-hidden="true"></i> Sign out</div>
+    <div class="nosweden-navbar">
+        <p class="nosweden-loggedout"><i class="fa fa-user-secret" id="login_anon_btn" aria-hidden="true"></i> Sign in anonymously</p>
+        <p class="nosweden-loggedout"><i class="fa fa-google-plus" aria-hidden="true"></i> Sign in with google </p>
+        <p class="nosweden-loggedin"><i class="fa fa-sign-out" id="logout_btn" aria-hidden="true"></i> Sign out</div>
     <p>
         <div class="container-fluid page">
-            <div class="top halfpage">
-                <div class="textBox">
+            <div class="nosweden-top nosweden-halfpage">
+                <div class="nosweden-textBox">
                     <div class="row">
                         <div class="col-lg-12 col-md-12">
                             <h1>Names of Sweden</h1>
-                            <div class="searchbox">
-
-                                <input class="input field" id="search_field" type="search" name="name" alt="Name">
-                                <input class="input button" id="search_btn" type="submit" value="Search" alt="search">
+                            <div>
+                                <input class="nosweden-input" id="search_field" type="search" name="name" alt="Name">
+                                <input class="nosweden-input nosweden-button" id="search_btn" type="submit" value="Search" alt="search">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="bottom halfpage">
+            <div class="nosweden-bottom nosweden-halfpage">
                 <div class="row">
                     <div class="col-lg-2 col-md-3 col-sm-2">
                         <div id="saved_list">
                             Favourite Searches
                             <div>
-                                <table class="databox" id="datalist">
+                                <table  id="data_list">
                                 </table>
 
                             </div>
@@ -77,7 +76,7 @@
                         <p id="title_text">Please search after a Swedish name above</p>
                     </div>
                     <div class="col-lg-2 col-md-3 col-sm-2">
-                        <input class="input button" id="saved_btn" type="submit" value="Save Search">
+                        <input class="nosweden-input nosweden-button" id="saved_btn" type="submit" value="Save Search">
                     </div>
                 </div>
                 <div class="row">

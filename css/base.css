@@ -18,7 +18,7 @@ body{
     font-size: 20px;
 }
 
-.navbar{
+.nosweden-navbar{
     width: 100%;
     background-color: #3E1103;
     position: fixed;
@@ -34,11 +34,11 @@ body{
     min-height: fit-content;
 }
 
-.halfpage{
+.nosweden-halfpage{
     height: 30%;
 }
 
-.top{
+.nosweden-top{
     background: url("../images/placeholderKaffe.jpg") #EAEAF1;
     background-attachment: fixed;
     background-size: cover;
@@ -48,7 +48,7 @@ body{
     text-align: center;
 }
 
-.textBox{
+.nosweden-textBox{
     position: relative;
     bottom: 0%;
     top: 10%;
@@ -58,7 +58,7 @@ h1{
     font-size: 40px;
     padding: 15px;
 }
-.bottom{
+.nosweden-bottom{
     padding: 10px;
 }
 
@@ -66,7 +66,7 @@ h1{
     text-align: center;
 }
 
-.input{
+.nosweden-input{
     background-color: #EAEAF1;
     color: #3E1103;
     border: 2px solid #3E1103;
@@ -75,7 +75,7 @@ h1{
     margin-right: 0;
 }
 
-.button{
+.nosweden-button{
     background-color: #72260B;
     color: #EAEAF1;
     font-family: caviarFont, Arial, Helvetica, sans-serif;
@@ -99,16 +99,14 @@ table, th, td{
 #saved_btn{
     display: none;
 }
-/*#saved_list{
+#saved_list{
     display: none;
-}*/
-
-#datalist{
+}
+#data_list{
     width: 100%;
     background-color: #EAEAF1;
     border: 1px solid #72260B;
-    font-size: 14px;
-    margin: 10px;
+    font-size: 16px;
     color: #3E1103;
 }
 

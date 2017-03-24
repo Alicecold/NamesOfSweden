@@ -1,17 +1,17 @@
 @media(max-width: 767px){
-    .top{
+    .nosweden-top{
         background-position: bottom center;
     }
 
-    .halfpage{
+    .nosweden-halfpage{
         height: 35%;
         min-height: fit-content;
     }
-table, td, th{
-    width: 90%;
+    table, td, th{
+        width: 90%;
     
-}
-    .textBox{
+    }
+    .nosweden-textBox{
         bottom: 5%;
         top: 5%;
     }
@@ -23,7 +23,7 @@ table, td, th{
         font-size: 60px;
     }
 
-    .halfpage{
+    .nosweden-halfpage{
         height: 30%;
     }
 
@@ -31,7 +31,7 @@ table, td, th{
         font-size: 120px;
     }
 
-    .textBox{
+    .nosweden-textBox{
         top: 50%;
         
     }
@@ -40,7 +40,7 @@ table, td, th{
 
     }
 
-    #datalist{
+    #data_list{
         font-size: 60px;
     }
 }

@@ -6,16 +6,25 @@ document.getElementById("search_btn").onclick = function () {
     getSCBData(name);
 }
 
-function setTitle(name) {
-    document.getElementById("title_text").innerHTML = "Results for the name: " + name;
+function setTitle(name, reason) {
+    switch (reason) {
+        case "found":
+            document.getElementById("title_text").innerHTML = "Results for the name: " + name;
+            break;
+        case "saved":
+            document.getElementById("title_text").innerHTML = "Saved Results for the name: " + name;
+            break;
+        case "removed":
+            document.getElementById("title_text").innerHTML = "Sucessfully removed " + name;
+            break;
+        case "notfound":
+            document.getElementById("title_text").innerHTML = "The name '" + name +
+                "' could not be found. It might be too uncommon (< 10 newborns/year since 1998) or there might be a spelling error.";
+            break;
+    }
 }
 
-function setTitleFromSaved(name){
-    document.getElementById("title_text").innerHTML = "Saved Results for the name: " + name;
-}
-
-function setTitleNameNotFound(name) {
-    document.getElementById("title_text").innerHTML = "The name '" + name + "' could not be found. It might be too uncommon (< 10 newborns/year since 1998) or there might be a spelling error.";
+function hideMainTable() {
     document.getElementById("saved_btn").style.display = "none";
     document.getElementById("result_table").style.display = "none";
 }
@@ -23,6 +32,10 @@ function setTitleNameNotFound(name) {
 function getSCBData(input) {
     /* Yaaaay JQuery */
     $.support.cors = true;
+
+    /* SCB API Expects first letter to be Upper case */
+    input = input.substring(0, 1).toUpperCase() + input.substring(1, input.length).toLowerCase();
+
     var nameQuery = {
         "query": [
             {
@@ -56,23 +69,28 @@ function getSCBData(input) {
                 }
             });
 
+            /* Sorting out false alarms*/
             if (outputArray.length > 0) {
                 current.name = input;
                 current.info = outputArray;
-                showResults(outputArray);
-                setTitle(input);
+                createTableResults(outputArray);
+                setTitle(input, "found");
+                ableToSave(true);
+            } else {
+                setTitle(input, "notfound");
+                hideMainTable();
+                ableToSave(false);
             }
-
-            document.getElementById("saved_btn").style.display = "inline";
         },
         error: function (jqXHR, status, thrown) {
-            setTitleNameNotFound(input);
+            setTitle(input, "notfound");
+            hideMainTable();
         }
     });
 }
 
 
-function showResults(output) {
+function createTableResults(output) {
     var resultTable = document.getElementById("result_table");
 
     resultTable.style.display = "inline-block";
@@ -85,6 +103,13 @@ function showResults(output) {
 
 
 /* Firebase */
+
+ableToSave = function (able) {
+    if (able && firebase.auth().currentUser)
+        document.getElementById("saved_btn").style.display = "inline";
+    else
+        document.getElementById("saved_btn").style.display = "none";
+}
 
 /*Log in/Log out*/
 document.getElementById("login_anon_btn").onclick = function () {
@@ -108,45 +133,73 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         var isAnonymous = user.isAnonymous;
         var uid = user.uid;
-        console.log("Logged In: " + uid);
-        if (savedList()) {
-            document.getElementById("saved_list").style.display = "inline";
-        }
-
-        for (x of document.getElementsByClassName("loggedout"))
-            x.style.display = "none";
-        for (x of document.getElementsByClassName("loggedin"))
-            x.style.display = "inline";
+        createTableFavs()
+        toggleLoggedInNavbarState(true);
     } else {
         console.log("Logged out");
-        for (x of document.getElementsByClassName("loggedin"))
-            x.style.display = "none";
-        for (x of document.getElementsByClassName("loggedout"))
-            x.style.display = "inline";
+        ableToSave(false);
+        document.getElementById("saved_list").style.display = "none";
+        toggleLoggedInNavbarState(false);
     }
 });
 
+toggleLoggedInNavbarState = function(loggedIn){
+    if (loggedIn) {
+        for (x of document.getElementsByClassName("nosweden-loggedout"))
+            x.style.display = "none";
+        for (x of document.getElementsByClassName("nosweden-loggedin"))
+            x.style.display = "inline";
+    } else {
+        for (x of document.getElementsByClassName("nosweden-loggedin"))
+            x.style.display = "none";
+        for (x of document.getElementsByClassName("nosweden-loggedout"))
+            x.style.display = "inline";
+    }
+
+}
+
 /*Collect from firebase */
-savedList = function () {
+createTableFavs = function () {
     var userId = firebase.auth().currentUser.uid;
     firebase.database().ref('/users/' + userId).once('value', function (snapshot) {
         var listString = "";
         snapshot.forEach(function (childSnapshot) {
-            listString += `<tr> <td class="namelist">${childSnapshot.key}</td><td><i class="fa fa-trash deletevalue" aria-hidden="true"></i></td></tr>`; //<i class="fa fa-trash" aria-hidden="true"></i>
+            listString += `<tr><td class="nosweden-namerows">${childSnapshot.key}</td> <td><i class="fa fa-trash nosweden-delete-item" aria-hidden="true"></i></td></tr>`;
         });
-        document.getElementById("datalist").innerHTML = listString;
+        document.getElementById("data_list").innerHTML = listString;
+        var rows = document.getElementsByClassName("nosweden-namerows");
+        var deleteListItemIcon = document.getElementsByClassName("nosweden-delete-item"); // I assume that they will be the same number, since I created them simultaneously
 
-        var list = document.getElementsByClassName("namelist");
-        var list = document.getElementsByClassName("deletevalue");
-        for(var i = 0; i < list.length; i++){
-            list[i].onclick = function(){
-                firebase.database().ref('/users/' + userId + '/' + this.innerHTML + '/popularity/').once('value', function (snapshot) {
-                    showResults(snapshot.val());
-                });
-                setTitleFromSaved(this.innerHTML);
-            }
+        if (rows.length == 0) {
+            document.getElementById("saved_list").style.display = "none";
+            return false;
+        }
+
+
+        for (var i = 0; i < rows.length; i++) {
+            var thisName = rows[i].innerHTML;
+            rows[i].onclick = (function (thisName) {
+                return function () {
+                    firebase.database().ref('/users/' + userId + '/' + thisName + '/popularity/').once('value', function (snapshot) {
+                        createTableResults(snapshot.val());
+                    });
+                    setTitle(thisName, "saved");
+                };
+            })(thisName);
+
+            deleteListItemIcon[i].onclick = (function (thisName) {
+                return function () {
+                    firebase.database().ref('/users/' + userId + '/' + thisName + '/').remove();
+                    setTitle(thisName, "removed");
+                    createTableFavs(); // Update Table
+                    hideMainTable();
+                };
+            })(thisName);
         }
     });
+
+    document.getElementById("saved_list").style.display = "inline";
+    return true;
 }
 
 /*Put to firebase*/
@@ -154,7 +207,5 @@ document.getElementById("saved_btn").onclick = function () {
     firebase.database().ref("users/" + firebase.auth().currentUser.uid + "/" + current.name).set({
         popularity: current.info
     });
-    if (savedList()) {
-        document.getElementById("saved_list").style.display = "inline";
-    }
+    createTableFavs()
 }
