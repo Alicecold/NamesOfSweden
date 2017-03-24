@@ -163,7 +163,6 @@ showUsername = function (provider, username) {
             document.getElementById("user_info").innerHTML = "<i class='fa fa-user-circle'  aria-hidden='true'></i> Logged in as <em>" + username + "</em> via google";
             break;
     }
-    console.log(provider + " / " + username);
 }
 
 toggleLoggedInNavbarState = function (loggedIn) {
