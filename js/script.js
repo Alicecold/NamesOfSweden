@@ -96,7 +96,10 @@ function createTableResults(output) {
     resultTable.style.display = "inline-block";
     resultTable.innerHTML = "<tr><th>Year</th><th>Number of Newborn Swedes</th></tr>";
     for (var i = 0; i < output.length; i++) {
-        resultTable.innerHTML += "<tr><td>" + output[i][0] + "</td><td>" + output[i][1] + "</td></tr>";
+        if (i % 2 == 0)
+            resultTable.innerHTML += "<tr class='nosweden-alternate-row'><td>" + output[i][0] + "</td><td>" + output[i][1] + "</td></tr>";
+        else
+            resultTable.innerHTML += "<tr><td>" + output[i][0] + "</td><td>" + output[i][1] + "</td></tr>";
     }
 }
 
@@ -143,7 +146,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 });
 
-toggleLoggedInNavbarState = function(loggedIn){
+toggleLoggedInNavbarState = function (loggedIn) {
     if (loggedIn) {
         for (x of document.getElementsByClassName("nosweden-loggedout"))
             x.style.display = "none";

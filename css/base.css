@@ -13,21 +13,21 @@ body{
     padding-right: 0;
     text-align: left;
     font-family: caviarFont, Arial, Helvetica, sans-serif;
-    color: #D98C44;
-    background-color: #3E1103;
+    color: #3E1103;
+    background-color: #EAEAF1;
     font-size: 20px;
 }
 
 .nosweden-navbar{
     width: 100%;
-    background-color: #3E1103;
+    background-color: #EAEAF1;
     position: fixed;
     top: 0;
     z-index: 2;
     padding-left: 10px;
 }
 
-.page{
+.nosweden-page{
     height: 100vh;
     overflow-x: hidden;
     padding: 0;
@@ -69,7 +69,7 @@ h1{
 .nosweden-input{
     background-color: #EAEAF1;
     color: #3E1103;
-    border: 2px solid #3E1103;
+    border: 2px solid #72260B;
     margin-top: 3px;
     margin-left: 0;
     margin-right: 0;
@@ -79,15 +79,24 @@ h1{
     background-color: #72260B;
     color: #EAEAF1;
     font-family: caviarFont, Arial, Helvetica, sans-serif;
+    max-width: 100%;
+}
+
+.nosweden-alternate-row{
+    background-color: #D98C44;
 }
 
 table, th, td{
     width: 100%;
-    border: 1px solid black;
     border-collapse: collapse;
     text-align: left;
     white-space: nowrap;
+    padding-left: 5px;
+    padding-right: 2px;
     
+}
+th{
+    border: 1px solid #3E1103;
 }
 
 #result_table{
@@ -108,5 +117,8 @@ table, th, td{
     border: 1px solid #72260B;
     font-size: 16px;
     color: #3E1103;
+}
+.nosweden-center-on-mobile{
+    text-align: initial;
 }
 
