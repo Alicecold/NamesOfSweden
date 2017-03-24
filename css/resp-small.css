@@ -1,4 +1,7 @@
-@media(max-width: 767px){
+@media(max-width: 700px){
+    body{
+        font-size: 16px;
+    }S
     .nosweden-top{
         background-position: bottom center;
     }
@@ -14,6 +17,16 @@
     .nosweden-textBox{
         bottom: 5%;
         top: 5%;
+    }
+    .nosweden-center-on-mobile{
+        text-align: center;
+    }
+
+}
+
+@media(min-width: 700px) and (max-width: 1000px){
+    body{
+        font-size: 16px;
     }
 
 }
