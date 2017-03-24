@@ -131,6 +131,19 @@ document.getElementById("logout_btn").onclick = function () {
         console.log("Oops! " + error);
     });
 }
+document.getElementById("login_google_btn").onclick = function () {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/plus.login');
+    firebase.auth().signInWithPopup(provider).then(function (result) {
+
+        console.log("Hi google!");
+    }).catch(function (error) {
+        console.log("Ooops google!");
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(errorCode + " " + errorMessage);
+    });
+}
 
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
