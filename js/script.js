@@ -5,7 +5,7 @@ document.getElementById("search_btn").onclick = function () {
     searchForName();
 }
 
-searchForName = function(){
+searchForName = function () {
     var name = document.getElementById("search_field").value;
     getSCBData(name);
     return false;
@@ -129,7 +129,13 @@ document.getElementById("login_anon_btn").onclick = function () {
 }
 
 document.getElementById("logout_btn").onclick = function () {
+    var user = firebase.auth().currentUser;
     firebase.auth().signOut().then(function () {
+    }, function (error) {
+        console.log(error.message);
+    });
+
+    user.delete().then(function () {
     }, function (error) {
         console.log(error.message);
     });
@@ -139,7 +145,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         if (user.isAnonymous) {
             document.getElementById("user_info").innerHTML = "<i class='fa fa-user-circle'  aria-hidden='true'></i> Logged in <em>Anonymously</em>";
-        } 
+        }
         createTableFavs()
         toggleLoggedInNavbarState(true);
     } else {
