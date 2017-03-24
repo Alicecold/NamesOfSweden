@@ -159,7 +159,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 
 showUsername = function (provider, username) {
     switch (provider) {
-        case "google.com":
+        case "Google":
             document.getElementById("user_info").innerHTML = "<i class='fa fa-user-circle'  aria-hidden='true'></i> Logged in as <em>" + username + "</em> via google";
             break;
     }
