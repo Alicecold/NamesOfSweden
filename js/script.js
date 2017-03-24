@@ -114,12 +114,11 @@ ableToSave = function (able) {
         document.getElementById("saved_btn").style.display = "none";
 }
 
-/*Log in/Log out buttons*/
+/*Log in/Log out*/
 document.getElementById("login_anon_btn").onclick = function () {
     firebase.auth().signInAnonymously().catch(function (error) {
         var errCode = error.code;
         var errMsg = error.message;
-        document.getElementById("user_info").innerHTML = "<i class='fa fa-user-circle'  aria-hidden='true'></i> Logged in <em>Anonymously</em>";
 
         console.log(errCode + " " + errMsg);
     });
@@ -136,7 +135,7 @@ document.getElementById("login_google_btn").onclick = function () {
     firebase.auth().signInWithPopup(provider).then(function (result) {
         var token = result.credential.accessToken;
         var user = result.user;
-        showUsername("Google", user.displayName);
+        console.log("Hi google!");
     }).catch(function (error) {
         console.log(error.message);
     });
@@ -144,6 +143,11 @@ document.getElementById("login_google_btn").onclick = function () {
 
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
+        if (user.isAnonymous) {
+            document.getElementById("user_info").innerHTML = "<i class='fa fa-user-circle'  aria-hidden='true'></i> Logged in <em>Anonymously</em>";
+        } else {
+            showUsername(user.getProviderId(), user.displayName);
+        }
         createTableFavs()
         toggleLoggedInNavbarState(true);
     } else {
