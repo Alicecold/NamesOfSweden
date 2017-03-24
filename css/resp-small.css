@@ -1,0 +1,59 @@
+@media(max-width: 700px){
+    body{
+        font-size: 16px;
+    }S
+    .nosweden-top{
+        background-position: bottom center;
+    }
+
+    .nosweden-halfpage{
+        height: 35%;
+        min-height: fit-content;
+    }
+    table, td, th{
+        width: 90%;
+    
+    }
+    .nosweden-textBox{
+        bottom: 5%;
+        top: 5%;
+    }
+    .nosweden-center-on-mobile{
+        text-align: center;
+    }
+
+}
+
+@media(min-width: 700px) and (max-width: 1000px){
+    body{
+        font-size: 16px;
+    }
+
+}
+
+@media(min-width: 2000px){
+    body{
+        font-size: 60px;
+    }
+
+    .nosweden-halfpage{
+        height: 30%;
+    }
+
+    h1{
+        font-size: 120px;
+    }
+
+    .nosweden-textBox{
+        top: 50%;
+        
+    }
+    #result_table{
+        font-size: 50px;
+
+    }
+
+    #data_list{
+        font-size: 60px;
+    }
+}

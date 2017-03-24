@@ -10,50 +10,80 @@
     <!-- stylesheets -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
-    <link rel="stylesheet" href="css/namesofswedenstyle.css"></link>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="stylesheet" href="css/resp-small.css"></link>
+    <link rel="stylesheet" href="css/font-face.css"></link>
     <!-- script files -->
+    <!-- Sorry for font awesome, but I don't currently have Creative Suite Available -->
+    <script src="https://use.fontawesome.com/a2275621e2.js"></script>
+    <!-- JQuery + Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.2.0.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I="
         crossorigin="anonymous" defer></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous" defer></script>
-    <script src="js/script.js" defer>
+    <!-- My script file-->
+    <script src="js/script.js" defer></script>
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-database.js"></script>
+    <script>
+        var config = {
+            apiKey: "AIzaSyAL6AZMKdHQpYqaTiOAxEGDhdTWVWAxbUk",
+            authDomain: "namesofsweden-8d926.firebaseapp.com",
+            databaseURL: "https://namesofsweden-8d926.firebaseio.com",
+            storageBucket: "namesofsweden-8d926.appspot.com",
+            messagingSenderId: "1032937080211"
+        };
+        firebase.initializeApp(config);
     </script>
 </head>
 
 <body>
-    <div class="container-fluid page">
-        <div class="top halfpage">
-            <div class="textBox">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12">
-                        <h1>Names of Sweden</h1>
-                        <div class="searchbox">
-
-                            <input class="input field" id="search_field" type="search" name="name" alt="Name">
-                            <input class="input button" id="search_btn" type="submit" value="Search" alt="search">
+    <div class="nosweden-navbar">
+        <p class="nosweden-loggedout" id="login_anon_btn"><i class="fa fa-user-secret"  aria-hidden="true"></i> Sign in anonymously</p>
+        <p class="nosweden-loggedout" id="login_google_btn" ><i class="fa fa-google-plus" aria-hidden="true"></i> Sign in with google </p>
+        <p class="nosweden-loggedin" id="logout_btn" ><i class="fa fa-sign-out"  aria-hidden="true"></i> Sign out</div>
+    <p>
+        <div class="container-fluid nosweden-page">
+            <div class="nosweden-top nosweden-halfpage">
+                <div class="nosweden-textBox">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <h1>Names of Sweden</h1>
+                            <div>
+                                <input class="nosweden-input" id="search_field" type="search" name="name" alt="Name">
+                                <input class="nosweden-input nosweden-button" id="search_btn" type="submit" value="Search" alt="search">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="bottom halfpage">
-            <div class="row">
-                <div class="col-lg-2 col-md-2">
-                    <input class="input" id="saved_list" type="text" alt="Saved searches">
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <p id="title_text">Please search after a Swedish name above</p>
-                    <table alt="Info about current name" id="result_table">
+            <div class="nosweden-bottom nosweden-halfpage">
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <div id="saved_list">
+                            Favourite Searches
+                            <div>
+                                <table  id="data_list">
+                                </table>
 
-                    </table>
-                </div>
-                <div class="col-lg-2 col-md-2">
-                    <input class="input button" id="saved_btn" type="submit" value="Save Search">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        <p id="title_text">Please search after a Swedish name</p>
+                        <table alt="Info about current name" id="result_table">
+                        </table>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 nosweden-center-on-mobile">
+                        <input class="nosweden-input nosweden-button" id="saved_btn" type="submit" value="Save Search">
+                    </div>
+
                 </div>
             </div>
         </div>
-    </div>
 
 </body>
 
