@@ -114,37 +114,61 @@ ableToSave = function (able) {
         document.getElementById("saved_btn").style.display = "none";
 }
 
-/*Log in/Log out*/
+/*Log in/Log out buttons*/
 document.getElementById("login_anon_btn").onclick = function () {
-    firebase.auth().signInAnonymously().catch(function (error) {
+    firebase.auth().signInAnonymously().then(function(){
+        showUsername("None", user.displayName);
+    }).catch(function (error) {
         var errCode = error.code;
         var errMsg = error.message;
 
+
         console.log(errCode + " " + errMsg);
     });
+
 }
 
 document.getElementById("logout_btn").onclick = function () {
     firebase.auth().signOut().then(function () {
-        console.log("Logged out");
     }, function (error) {
-        console.log("Oops! " + error);
+        console.log(error.message);
+    });
+}
+document.getElementById("login_google_btn").onclick = function () {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(function (result) {
+        var user = result.user;
+        showUsername("Google", user.displayName);
+    }).catch(function (error) {
+        console.log(error.message);
     });
 }
 
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-        var isAnonymous = user.isAnonymous;
-        var uid = user.uid;
-        createTableFavs()
         toggleLoggedInNavbarState(true);
+        createTableFavs()
+        var provider = user.getProviderID;
+        showUsername(provider, user.displayName);
+        
     } else {
-        console.log("Logged out");
         ableToSave(false);
         document.getElementById("saved_list").style.display = "none";
         toggleLoggedInNavbarState(false);
     }
 });
+
+/* It's not the most elegant solution, but it works!*/
+showUsername = function (provider, username) {
+    switch (provider) {
+        case "Google":
+            document.getElementById("user_info").innerHTML = "<i class='fa fa-user-circle'  aria-hidden='true'></i> Logged in as <em>" + username + "</em> via Google";
+            break;
+        case "None":
+            document.getElementById("user_info").innerHTML = "<i class='fa fa-user-circle'  aria-hidden='true'></i> Logged in <em>Anonymously</em>";
+            break;
+    }
+}
 
 toggleLoggedInNavbarState = function (loggedIn) {
     if (loggedIn) {
