@@ -8,7 +8,7 @@
         searchForName();
     }
     document.getElementById("logout_btn").onclick = function () {
-        logOut();
+        logOut(firebase.auth().currentUser);
     }
 
     document.getElementById("login_anon_btn").onclick = function () {

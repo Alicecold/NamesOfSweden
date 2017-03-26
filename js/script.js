@@ -6,7 +6,7 @@ let current = { name: "", info: [] };
 searchForName = function () {
     var name = document.getElementById("search_field").value;
     getSCBData(name);
-    return false; //false -> the inline onSubmit in HTML will not try to submit
+    return false; //false -> the inline onSubmit in HTML will not try to submit using adressbar 
 }
 setTitle = function (name, reason) {
     switch (reason) {
@@ -108,6 +108,7 @@ function createTableResults(output) {
 
 /* Firebase */
 
+/* shows save-button based on the status of the user and the search */
 ableToSave = function (hasSearched, user) {
     if (hasSearched && user) {
         styleDisplayById("saved_btn", "inline");
@@ -123,7 +124,7 @@ styleDisplayById = function (element, display) {
     switch (display) {
         case "inline":
         case "none":
-        document.getElementById(element).style.display = display;
+            document.getElementById(element).style.display = display;
             return true;
     }
     return false;
@@ -132,25 +133,35 @@ styleDisplayById = function (element, display) {
 /*Log in/Log out*/
 logIn = function () {
     firebase.auth().signInAnonymously().catch(function (error) {
-        var errCode = error.code;
-        var errMsg = error.message;
 
-        console.log(errCode + " " + errMsg);
+        console.log(error.code + " " + error.message);
     });
 }
 
 logOut = function (user) {
+    var isAnon = user.isAnonymous;
     firebase.auth().signOut().then(function () {
     }, function (error) {
         console.log(error.message);
     });
 
-    user.delete().then(function () {
-    }, function (error) {
-        console.log(error.message);
-    });
+    /* some cleaning after the anonymous users */
+    if (user.isAnonymous) {
+        /* remove dbs entries */
+        firebase.database().ref("users/" + user.uid).remove();
+
+        /* delete user */
+        user.delete().then(function () {
+        }, function (error) {
+            console.log(error.message);
+        });
+    }
+
 }
 
+/* response upon firebase onAuthStateChanged 
+- if the user is not logged in, the user should not be able to save
+- else, the user should have a favourite stats list showed for them*/
 firebaseStateChangedToLogin = function (user) {
     if (user) {
         createTableFavs(user);
@@ -161,6 +172,7 @@ firebaseStateChangedToLogin = function (user) {
     }
 }
 
+/* Changes the navbar and what elements that should be shown based on login state */
 toggleLoggedInNavbarState = function (loggedIn) {
     if (loggedIn) {
         for (x of document.getElementsByClassName("nosweden-loggedout"))
@@ -201,7 +213,7 @@ createTableFavs = function (user) {
     return true;
 }
 
-
+/* Created the HTML for the list with the saved searches */
 createFavTableFromArray = function (savedNames) {
     var listString = "";
     for (name of savedNames)
@@ -209,6 +221,7 @@ createFavTableFromArray = function (savedNames) {
     document.getElementById("data_list").innerHTML = listString;
 }
 
+/* Makes the searchlist clickable */
 createFavTableOnClicks = function (user) {
     var rows = document.getElementsByClassName("nosweden-namerows");
     var deleteListItemIcon = document.getElementsByClassName("nosweden-delete-item"); // I assume that they will be the same number, since I created them simultaneously
