@@ -139,7 +139,6 @@ logIn = function () {
 }
 
 logOut = function (user) {
-    var isAnon = user.isAnonymous;
     firebase.auth().signOut().then(function () {
     }, function (error) {
         console.log(error.message);
@@ -192,9 +191,7 @@ toggleLoggedInNavbarState = function (loggedIn) {
 
 /*Collect from firebase */
 createTableFavs = function (user) {
-    var userId = user.uid;
-
-    firebase.database().ref('/users/' + userId).once('value', function (snapshot) {
+    firebase.database().ref('/users/' + user.uid).once('value', function (snapshot) {
         var savedNames = [];
         snapshot.forEach(function (childSnapshot) {
             savedNames.push(childSnapshot.key);
@@ -225,6 +222,7 @@ createFavTableFromArray = function (savedNames) {
 createFavTableOnClicks = function (user) {
     var rows = document.getElementsByClassName("nosweden-namerows");
     var deleteListItemIcon = document.getElementsByClassName("nosweden-delete-item"); // I assume that they will be the same number, since I created them simultaneously
+    
     for (var i = 0; i < rows.length; i++) {
         var thisName = rows[i].innerHTML;
         rows[i].onclick = (function (thisName) {
