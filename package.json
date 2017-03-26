@@ -1,0 +1,30 @@
+{
+  "name": "namesofsweden",
+  "version": "1.0.0",
+  "description": "Webapp using SCB RESTful API to show statistics of swedish baby names",
+  "main": "index.js",
+  "scripts": {
+    "test": ".\\node_modules\\.bin\\jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alicecold/NamesOfSweden.git"
+  },
+  "keywords": [
+    "SCB",
+    "Firebase"
+  ],
+  "author": "Alicecold",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alicecold/NamesOfSweden/issues"
+  },
+  "homepage": "https://github.com/Alicecold/NamesOfSweden#readme",
+  "devDependencies": {
+    "jasmine": "2.5.3",
+    "jsdom": "^9.12.0"
+  },
+  "dependencies": {
+    "firebase": "^3.7.3"
+  }
+}

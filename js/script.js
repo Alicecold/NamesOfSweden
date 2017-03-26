@@ -1,13 +1,9 @@
 
 let current = { name: "", info: [] };
 
-document.getElementById("search_btn").onclick = function () {
-    searchForName();
-}
 
-searchForName = function () {
-    var name = document.getElementById("search_field").value;
-    getSCBData(name);
+searchForName = function (input) {
+    getSCBData(input);
     return false;
 }
 function setTitle(name, reason) {
@@ -119,7 +115,7 @@ ableToSave = function (able) {
 }
 
 /*Log in/Log out*/
-document.getElementById("login_anon_btn").onclick = function () {
+logIn = function () {
     firebase.auth().signInAnonymously().catch(function (error) {
         var errCode = error.code;
         var errMsg = error.message;
@@ -128,7 +124,7 @@ document.getElementById("login_anon_btn").onclick = function () {
     });
 }
 
-document.getElementById("logout_btn").onclick = function () {
+logOut = function () {
     var user = firebase.auth().currentUser;
     firebase.auth().signOut().then(function () {
     }, function (error) {
@@ -141,19 +137,15 @@ document.getElementById("logout_btn").onclick = function () {
     });
 }
 
-firebase.auth().onAuthStateChanged(function (user) {
+firebaseStateChangedToLogin = function (user) {
     if (user) {
-        if (user.isAnonymous) {
-            document.getElementById("user_info").innerHTML = "<i class='fa fa-user-circle'  aria-hidden='true'></i> Logged in <em>Anonymously</em>";
-        }
-        createTableFavs()
-        toggleLoggedInNavbarState(true);
+        createTableFavs(user);
+        return true;
     } else {
         ableToSave(false);
-        document.getElementById("saved_list").style.display = "none";
-        toggleLoggedInNavbarState(false);
+        return false;
     }
-});
+}
 
 toggleLoggedInNavbarState = function (loggedIn) {
     if (loggedIn) {
@@ -161,33 +153,35 @@ toggleLoggedInNavbarState = function (loggedIn) {
             x.style.display = "none";
         for (x of document.getElementsByClassName("nosweden-loggedin"))
             x.style.display = "inline";
+        return true;
     } else {
         for (x of document.getElementsByClassName("nosweden-loggedin"))
             x.style.display = "none";
         for (x of document.getElementsByClassName("nosweden-loggedout"))
             x.style.display = "inline";
+        return false;
     }
 
 }
 
 /*Collect from firebase */
-createTableFavs = function () {
-    var userId = firebase.auth().currentUser.uid;
-    firebase.database().ref('/users/' + userId).once('value', function (snapshot) {
-        var listString = "";
-        snapshot.forEach(function (childSnapshot) {
-            listString += `<tr><td class="nosweden-namerows nosweden-clickable">${childSnapshot.key}</td> <td><i class="fa fa-trash nosweden-delete-item nosweden-clickable" aria-hidden="true"></i></td></tr>`;
-        });
-        document.getElementById("data_list").innerHTML = listString;
-        var rows = document.getElementsByClassName("nosweden-namerows");
-        var deleteListItemIcon = document.getElementsByClassName("nosweden-delete-item"); // I assume that they will be the same number, since I created them simultaneously
+createTableFavs = function (user) {
+    var userId = user.uid;
 
-        if (rows.length == 0) {
+    firebase.database().ref('/users/' + userId).once('value', function (snapshot) {
+        var savedNames = [];
+        snapshot.forEach(function (childSnapshot) {
+            savedNames.push(childSnapshot.key);
+        });
+
+        if (savedNames.length == 0) {
             document.getElementById("saved_list").style.display = "none";
             return false;
         }
+        createNameHTML(savedNames);
 
-
+        var rows = document.getElementsByClassName("nosweden-namerows");
+        var deleteListItemIcon = document.getElementsByClassName("nosweden-delete-item"); // I assume that they will be the same number, since I created them simultaneously
         for (var i = 0; i < rows.length; i++) {
             var thisName = rows[i].innerHTML;
             rows[i].onclick = (function (thisName) {
@@ -203,7 +197,7 @@ createTableFavs = function () {
                 return function () {
                     firebase.database().ref('/users/' + userId + '/' + thisName + '/').remove();
                     setTitle(thisName, "removed");
-                    createTableFavs(); // Update Table
+                    createTableFavs(user); // Update Table
                     hideMainTable();
                 };
             })(thisName);
@@ -214,10 +208,20 @@ createTableFavs = function () {
     return true;
 }
 
+createNameHTML = function (savedNames) {
+    var listString = "";
+    for (name of savedNames)
+        listString += `<tr><td class="nosweden-namerows nosweden-clickable">${name}</td> <td><i class="fa fa-trash nosweden-delete-item nosweden-clickable" aria-hidden="true"></i></td></tr>`;
+    document.getElementById("data_list").innerHTML = listString;
+}
+
 /*Put to firebase*/
-document.getElementById("saved_btn").onclick = function () {
+saveToFirebase = function () {
     firebase.database().ref("users/" + firebase.auth().currentUser.uid + "/" + current.name).set({
         popularity: current.info
     });
-    createTableFavs()
+    createTableFavs(firebase.auth().currentUser);
 }
+
+
+
