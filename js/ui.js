@@ -1,10 +1,11 @@
+// Basic onlick-interactions with the DOM 
 (function () {
     document.getElementById("saved_btn").onclick = function () {
-        saveToFirebase();
+        saveToFirebase(firebase.auth().currentUser);
     }
     document.getElementById("search_btn").onclick = function () {
-        var name = document.getElementById("search_field").value;
-        searchForName(name);
+        
+        searchForName();
     }
     document.getElementById("logout_btn").onclick = function () {
         logOut();

@@ -2,11 +2,13 @@
 let current = { name: "", info: [] };
 
 
-searchForName = function (input) {
-    getSCBData(input);
-    return false;
+
+searchForName = function () {
+    var name = document.getElementById("search_field").value;
+    getSCBData(name);
+    return false; //false -> the inline onSubmit in HTML will not try to submit
 }
-function setTitle(name, reason) {
+setTitle = function (name, reason) {
     switch (reason) {
         case "found":
             document.getElementById("title_text").innerHTML = "Results for the name: " + name;
@@ -25,11 +27,11 @@ function setTitle(name, reason) {
 }
 
 function hideMainTable() {
-    document.getElementById("saved_btn").style.display = "none";
-    document.getElementById("result_table").style.display = "none";
+    styleDisplayById("saved_btn", "none");
+    styleDisplayById("result_table", "none");
 }
 
-function getSCBData(input) {
+function getSCBData(input, user) {
     /* Yaaaay JQuery */
     $.support.cors = true;
 
@@ -75,11 +77,11 @@ function getSCBData(input) {
                 current.info = outputArray;
                 createTableResults(outputArray);
                 setTitle(input, "found");
-                ableToSave(true);
+                ableToSave(true, firebase.auth().currentUser);
             } else {
                 setTitle(input, "notfound");
                 hideMainTable();
-                ableToSave(false);
+                ableToSave(false, firebase.auth().currentUser);
             }
         },
         error: function (jqXHR, status, thrown) {
@@ -92,8 +94,6 @@ function getSCBData(input) {
 
 function createTableResults(output) {
     var resultTable = document.getElementById("result_table");
-
-    resultTable.style.display = "inline-block";
     resultTable.innerHTML = "<tr><th>Year</th><th>Number of Newborn Swedes</th></tr>";
     for (var i = 0; i < output.length; i++) {
         if (i % 2 == 0)
@@ -101,17 +101,32 @@ function createTableResults(output) {
         else
             resultTable.innerHTML += "<tr><td>" + output[i][0] + "</td><td>" + output[i][1] + "</td></tr>";
     }
+    styleDisplayById("result_table", "inline-block");
 }
 
 
 
 /* Firebase */
 
-ableToSave = function (able) {
-    if (able && firebase.auth().currentUser)
-        document.getElementById("saved_btn").style.display = "inline";
-    else
-        document.getElementById("saved_btn").style.display = "none";
+ableToSave = function (hasSearched, user) {
+    if (hasSearched && user) {
+        styleDisplayById("saved_btn", "inline");
+        return true;
+    }
+    else {
+        styleDisplayById("saved_btn", "none");
+        return false;
+    }
+}
+
+styleDisplayById = function (element, display) {
+    switch (display) {
+        case "inline":
+        case "none":
+        document.getElementById(element).style.display = display;
+            return true;
+    }
+    return false;
 }
 
 /*Log in/Log out*/
@@ -124,8 +139,7 @@ logIn = function () {
     });
 }
 
-logOut = function () {
-    var user = firebase.auth().currentUser;
+logOut = function (user) {
     firebase.auth().signOut().then(function () {
     }, function (error) {
         console.log(error.message);
@@ -142,7 +156,7 @@ firebaseStateChangedToLogin = function (user) {
         createTableFavs(user);
         return true;
     } else {
-        ableToSave(false);
+        ableToSave(false, user);
         return false;
     }
 }
@@ -175,52 +189,59 @@ createTableFavs = function (user) {
         });
 
         if (savedNames.length == 0) {
-            document.getElementById("saved_list").style.display = "none";
+            styleDisplayById("saved_list", "none");
             return false;
         }
-        createNameHTML(savedNames);
 
-        var rows = document.getElementsByClassName("nosweden-namerows");
-        var deleteListItemIcon = document.getElementsByClassName("nosweden-delete-item"); // I assume that they will be the same number, since I created them simultaneously
-        for (var i = 0; i < rows.length; i++) {
-            var thisName = rows[i].innerHTML;
-            rows[i].onclick = (function (thisName) {
-                return function () {
-                    firebase.database().ref('/users/' + userId + '/' + thisName + '/popularity/').once('value', function (snapshot) {
-                        createTableResults(snapshot.val());
-                    });
-                    setTitle(thisName, "saved");
-                };
-            })(thisName);
-
-            deleteListItemIcon[i].onclick = (function (thisName) {
-                return function () {
-                    firebase.database().ref('/users/' + userId + '/' + thisName + '/').remove();
-                    setTitle(thisName, "removed");
-                    createTableFavs(user); // Update Table
-                    hideMainTable();
-                };
-            })(thisName);
-        }
+        createFavTableFromArray(savedNames);
+        createFavTableOnClicks(user);
     });
 
-    document.getElementById("saved_list").style.display = "inline";
+    styleDisplayById("saved_list", "inline");
     return true;
 }
 
-createNameHTML = function (savedNames) {
+
+createFavTableFromArray = function (savedNames) {
     var listString = "";
     for (name of savedNames)
         listString += `<tr><td class="nosweden-namerows nosweden-clickable">${name}</td> <td><i class="fa fa-trash nosweden-delete-item nosweden-clickable" aria-hidden="true"></i></td></tr>`;
     document.getElementById("data_list").innerHTML = listString;
 }
 
+createFavTableOnClicks = function (user) {
+    var rows = document.getElementsByClassName("nosweden-namerows");
+    var deleteListItemIcon = document.getElementsByClassName("nosweden-delete-item"); // I assume that they will be the same number, since I created them simultaneously
+    for (var i = 0; i < rows.length; i++) {
+        var thisName = rows[i].innerHTML;
+        rows[i].onclick = (function (thisName) {
+            return function () {
+                firebase.database().ref('/users/' + user.uid + '/' + thisName + '/popularity/').once('value', function (snapshot) {
+                    createTableResults(snapshot.val());
+                    console.log(thisName);
+                });
+                setTitle(thisName, "saved");
+            };
+        })(thisName);
+
+        deleteListItemIcon[i].onclick = (function (thisName) {
+            return function () {
+                firebase.database().ref('/users/' + user.uid + '/' + thisName + '/').remove();
+                setTitle(thisName, "removed");
+                createTableFavs(user); // Update Table
+                hideMainTable();
+            };
+        })(thisName);
+    }
+}
+
+
 /*Put to firebase*/
-saveToFirebase = function () {
-    firebase.database().ref("users/" + firebase.auth().currentUser.uid + "/" + current.name).set({
+saveToFirebase = function (user) {
+    firebase.database().ref("users/" + user.uid + "/" + current.name).set({
         popularity: current.info
     });
-    createTableFavs(firebase.auth().currentUser);
+    createTableFavs(user); //Update table
 }
 
 

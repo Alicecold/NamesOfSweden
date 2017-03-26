@@ -1,3 +1,4 @@
+/* My attempt at a firabase-mock */
 firebase = (function () {
 
     var firebase = {
@@ -6,20 +7,14 @@ firebase = (function () {
     firebase.database = function () {
         return true;
     }
-    firebase.database().ref = function(){
+    firebase.auth = function () {
+
         return true;
     }
 
-    /*Net.prototype.checkInternetAvailable = function (url) {
+    firebase.database().ref = function () {
         return true;
-    };*/
-
+    }
     return firebase;
 
 })();
-
-//firebase = new Firebase;
-
-/*firebase.database = function(){
-
-}*/
