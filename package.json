@@ -21,8 +21,7 @@
   },
   "homepage": "https://github.com/Alicecold/NamesOfSweden#readme",
   "devDependencies": {
-    "jasmine": "2.5.3",
-    "jsdom": "^9.12.0"
+    "jasmine": "2.5.3"
   },
   "dependencies": {
     "firebase": "^3.7.3"
