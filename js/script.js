@@ -25,18 +25,23 @@ setTitle = function (name, reason) {
             break;
     }
 }
-
-function hideMainTable() {
+hideMainTable = function() {
     styleDisplayById("saved_btn", "none");
     styleDisplayById("result_table", "none");
 }
 
-function getSCBData(input, user) {
+
+fixCaseOfName = function(input){
+    return input.substring(0, 1).toUpperCase() + input.substring(1, input.length).toLowerCase();
+}
+
+
+getSCBData = function(input, user) {
     /* Yaaaay JQuery */
     $.support.cors = true;
 
     /* SCB API Expects first letter to be Upper case */
-    input = input.substring(0, 1).toUpperCase() + input.substring(1, input.length).toLowerCase();
+    input = fixCaseOfName(input);
 
     var nameQuery = {
         "query": [
@@ -124,6 +129,7 @@ styleDisplayById = function (element, display) {
     switch (display) {
         case "inline":
         case "none":
+        case "inline-block":
             document.getElementById(element).style.display = display;
             return true;
     }
