@@ -6,7 +6,6 @@ let current = { name: "", info: [] };
 searchForName = function () {
     var name = document.getElementById("search_field").value;
     getSCBData(name);
-    console.log("search");
     return false; //false -> the inline onSubmit in HTML will not try to submit using adressbar 
 }
 setTitle = function (name, reason) {
@@ -43,7 +42,6 @@ getSCBData = function (input, user) {
 
     /* SCB API Expects first letter to be Upper case */
     input = fixCaseOfName(input);
-    console.log(input);
     var nameQuery = {
         "query": [
             {
@@ -76,7 +74,6 @@ getSCBData = function (input, user) {
                     outputArray.push([data.key[1], data.values[0]]);
                 }
             });
-            console.log(outerWidth.length);
             /* Sorting out false alarms*/
             if (outputArray.length > 0) {
                 current.name = input;
@@ -236,7 +233,6 @@ createFavTableOnClicks = function (user) {
             return function () {
                 firebase.database().ref('/users/' + user.uid + '/' + thisName + '/popularity/').once('value', function (snapshot) {
                     createTableResults(snapshot.val());
-                    console.log(thisName);
                 });
                 setTitle(thisName, "saved");
             };
