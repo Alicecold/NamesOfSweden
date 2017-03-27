@@ -6,6 +6,7 @@ let current = { name: "", info: [] };
 searchForName = function () {
     var name = document.getElementById("search_field").value;
     getSCBData(name);
+    console.log("search");
     return false; //false -> the inline onSubmit in HTML will not try to submit using adressbar 
 }
 setTitle = function (name, reason) {
@@ -25,24 +26,24 @@ setTitle = function (name, reason) {
             break;
     }
 }
-hideMainTable = function() {
+hideMainTable = function () {
     styleDisplayById("saved_btn", "none");
     styleDisplayById("result_table", "none");
 }
 
 
-fixCaseOfName = function(input){
+fixCaseOfName = function (input) {
     return input.substring(0, 1).toUpperCase() + input.substring(1, input.length).toLowerCase();
 }
 
 
-getSCBData = function(input, user) {
+getSCBData = function (input, user) {
     /* Yaaaay JQuery */
     $.support.cors = true;
 
     /* SCB API Expects first letter to be Upper case */
     input = fixCaseOfName(input);
-
+    console.log(input);
     var nameQuery = {
         "query": [
             {
@@ -75,7 +76,7 @@ getSCBData = function(input, user) {
                     outputArray.push([data.key[1], data.values[0]]);
                 }
             });
-
+            console.log(outerWidth.length);
             /* Sorting out false alarms*/
             if (outputArray.length > 0) {
                 current.name = input;
@@ -228,7 +229,7 @@ createFavTableFromArray = function (savedNames) {
 createFavTableOnClicks = function (user) {
     var rows = document.getElementsByClassName("nosweden-namerows");
     var deleteListItemIcon = document.getElementsByClassName("nosweden-delete-item"); // I assume that they will be the same number, since I created them simultaneously
-    
+
     for (var i = 0; i < rows.length; i++) {
         var thisName = rows[i].innerHTML;
         rows[i].onclick = (function (thisName) {
