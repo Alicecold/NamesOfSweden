@@ -61,7 +61,7 @@ getSCBData = function (input, user) {
 
     $.ajax({
         type: "POST",
-        url: "https://api.scb.se/OV0104/v1/doris/en/ssd/BE/BE0001/BE0001T04Ar/",
+        url: "https://api.scb.se/OV0104/v1/doris/en/ssd/BE/BE0001/BE0001D/BE0001T04Ar",
         data: JSON.stringify(nameQuery),
         dataType: "json",
         success: function (recieved) {
